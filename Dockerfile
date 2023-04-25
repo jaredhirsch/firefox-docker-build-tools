@@ -11,14 +11,13 @@ RUN apt-get update
 
 # 1. System preparation
 # 1.1 Install Python
-RUN apt-get install -y curl python3 python3-pip
+# 1.2 Install Mercurial (note: just using the distro's mercurial
+# (note 2: also installing git because I like git)
+RUN apt-get install -y curl python3 python3-pip mercurial git
 
-# 1.2 Install Mercurial
-RUN python3 -m pip install --user mercurial
-
-# 2. Bootstrap a copy of the Firefox source code¶
+# 2. Bootstrap a copy of the Firefox source code
 RUN curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O
-RUN python3 bootstrap.py
+RUN python3 bootstrap.py --vcs=git
 
 # 3. Build
 WORKDIR mozilla-unified
