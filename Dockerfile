@@ -13,7 +13,9 @@ RUN apt-get update
 # 1.1 Install Python
 # 1.2 Install Mercurial (note: just using the distro's mercurial
 # (note 2: also installing git because I like git)
-RUN apt-get install -y curl python3 python3-pip mercurial git 
+# note 3: pre-installing rust to dodge around some weird problem with
+#         unattended rustup setup via bootstrap
+RUN apt-get install -y curl python3 python3-pip mercurial git rustc
 
 # 2. Bootstrap a copy of the Firefox source code
 RUN curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O
