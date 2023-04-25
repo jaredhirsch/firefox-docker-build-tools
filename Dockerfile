@@ -11,7 +11,7 @@ RUN apt-get update
 
 # 1. System preparation
 # 1.1 Install Python
-RUN apt-get install curl python3 python3-pip
+RUN apt-get install -y curl python3 python3-pip
 
 # 1.2 Install Mercurial
 RUN python3 -m pip install --user mercurial
