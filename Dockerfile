@@ -15,7 +15,10 @@ RUN apt-get update
 # (note 2: also installing git because I like git)
 # note 3: pre-installing rust to dodge around some weird problem with
 #         unattended rustup setup via bootstrap
-RUN apt-get install -y curl python3 python3-pip mercurial git rustc
+RUN apt-get install -y curl python3 python3-pip mercurial git
+
+# to avoid bootstrap.py problems, just install rust via rustup
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 # 2. Bootstrap a copy of the Firefox source code
 RUN curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O
