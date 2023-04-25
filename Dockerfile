@@ -15,7 +15,9 @@ RUN apt-get update
 # (note 2: also installing git because I like git)
 # note 3: pre-installing rust to dodge around some weird problem with
 #         unattended rustup setup via bootstrap
-RUN apt-get install -y curl python3 python3-pip mercurial git
+# note 4: I think we also aren't getting all the llvm / clang stuff via bootstrap...
+# note 5: bootstrap can't find pkg-config. So install it via apt, too.
+RUN apt-get install -y curl python3 python3-pip mercurial git llvm clang pkg-config
 
 # to avoid bootstrap.py problems, just install rust via rustup
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
