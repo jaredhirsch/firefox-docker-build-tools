@@ -13,21 +13,21 @@ RUN apt-get update
 # 1.1 Install Python
 # 1.2 Install Mercurial (note: just using the distro's mercurial)
 # note 2: also installing git because I like git
-# note 3: pre-installing rust to dodge around some weird problem with
-#         unattended rustup setup via bootstrap
-# note 4: I think we also aren't getting all the llvm / clang stuff via bootstrap...
-# note 5: bootstrap can't find pkg-config. So install it via apt, too.
+# note 3: I think we also aren't getting all the llvm / clang stuff via bootstrap...
+# note 4: bootstrap can't find pkg-config. So install it via apt, too.
 RUN apt-get install -y curl python3 python3-pip mercurial git llvm clang pkg-config
 
-# To avoid later bootstrap problems, install rust via NodeSource.
+# To avoid later bootstrap problems, install nodejs via NodeSource.
 # This incantation comes from: https://github.com/nodesource/distributions#using-debian-as-root-4
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs
 
-# To avoid bootstrap.py problems, just install rust via rustup.
+# Install rust directly with rustup, because bootstrap's --no-interactive
+# option has a bug: user interaction is needed if bootstrap installs rust.
+# (TODO file a BMO bug about this)
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # Add cargo to the path...
 ENV PATH="/root/.cargo/bin:$PATH"
-# ...because bootstrap can't seem to install cbindgen. So, install it manually.
+# ...so we can manually install cbindgen, because bootstrap can't seem to install it.
 RUN cargo install cbindgen
 
 # 2. Bootstrap a copy of the Firefox source code
@@ -46,7 +46,7 @@ CMD git branch -t central bookmarks/central
 # CMD hg up -C central
 # CMD hg up central
 
-# Work around endless wasm/wasi linker errors.
+# Use a separate configure step to work around endless wasm/wasi linker errors.
 CMD ./mozilla-unified/mach configure --without-wasm-sandboxed-libraries
 
 # Finally, build.
