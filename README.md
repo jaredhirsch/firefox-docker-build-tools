@@ -13,8 +13,9 @@ that can be tedious to change in a local development environment.
 4. Get the image's ID: `docker image ls` (it'll be an 11-char hash)
 5. Enable X session sharing for local containers: `xhost +localhost`
 5. Run the image in a container: `docker run -i -t 8e46a80521b /bin/bash` (replace `8e46a80521b` with your image's ID)
-6. Inside the container, configure the build: `./mach configure --without-wasm-sandboxed-libraries`
-7. Inside the container, after configure runs, build Firefox: `./mach build`
+  * except on mac, do this: `docker run -e DISPLAY=docker.for.mac.host.internal:0 -i -t 8e46a80521b /bin/bash` (replace `8e46a80521b` with your image's ID)
+7. Inside the container, configure the build: `./mach configure --without-wasm-sandboxed-libraries`
+8. Inside the container, after configure runs, build Firefox: `./mach build`
 
 Now you should be able to develop Firefox, run mozregression, etc.
 
