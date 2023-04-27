@@ -17,6 +17,11 @@ RUN apt-get update
 # note 4: bootstrap can't find pkg-config. So install it via apt, too.
 RUN apt-get install -y curl python3 python3-pip mercurial git llvm clang pkg-config
 
+# note: adding (lots) more stuff that causes the built thing to fail
+# note 2: lots of other libraries mentioned here, maybe we'll eventually wind up
+#         needing to include them all https://gregoryszorc.com/blog/2013/05/19/using-docker-to-build-firefox/
+RUN apt-get install -y packagekit-gtk3-module libasound2-dev libdbus-glib-1-dev
+
 # To avoid later bootstrap problems, install nodejs via NodeSource.
 # This incantation comes from: https://github.com/nodesource/distributions#using-debian-as-root-4
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs
